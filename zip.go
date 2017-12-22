@@ -6,8 +6,9 @@ import (
 	"io/ioutil"
 	"archive/zip"
 	"os"
-	"fmt"
 )
+
+const pastaGit = string(os.PathSeparator) + ".git" + string(os.PathSeparator)
 
 //Cria um zip com o arquivo file na pasta destino.
 // O nome do arquivo criado é o mesmo que o de origem, com a extensão trocada para zip.
@@ -38,6 +39,7 @@ func File(arquivoOrigem, pastaDestino string) error {
 //Cria um arquivo com o conteúdo da pasta de origem no arquivo de destino.
 //O arquivo de destino não deve conter a extensão.
 // Se informado "", o nome do arquivo é o mesmo que o da pasta de origem.
+// Não copia arquivos da pasta ".git".
 func Dir(pastaOrigem, arquivoDestino string) error {
 	if arquivoDestino == "" {
 		arquivoDestino = filepath.Base(pastaOrigem)
@@ -51,10 +53,11 @@ func Dir(pastaOrigem, arquivoDestino string) error {
 		if info.IsDir() {
 			return nil
 		}
+		if strings.Index(path, pastaGit) != -1 {
+			return nil
+		}
 		indice := strings.Index(path, string(os.PathSeparator))
 		newPath := path[indice+1:]
-		fmt.Println(newPath)
-		fmt.Println("---")
 		f, err := w.Create(newPath)
 		if err != nil {
 			return err

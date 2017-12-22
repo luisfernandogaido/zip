@@ -12,7 +12,7 @@ func TestFile(t *testing.T) {
 }
 
 func TestDir(t *testing.T) {
-	err := Dir("arquivos", "")
+	err := Dir("arquivos", "zip")
 	if err != nil {
 		t.Fatal(err)
 	}
