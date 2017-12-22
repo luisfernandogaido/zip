@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"archive/zip"
 	"os"
-	"fmt"
 )
 
 //Cria um zip com o arquivo file na pasta destino.
