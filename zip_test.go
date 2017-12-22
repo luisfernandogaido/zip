@@ -2,6 +2,7 @@ package zip
 
 import (
 	"testing"
+	"fmt"
 )
 
 func TestFile(t *testing.T) {
@@ -16,4 +17,8 @@ func TestDir(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func Test(t *testing.T) {
+	fmt.Println("oi")
 }
