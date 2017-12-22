@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"archive/zip"
 	"os"
+	"fmt"
 )
 
 //Cria um zip com o arquivo file na pasta destino.
@@ -34,11 +35,14 @@ func File(arquivoOrigem, pastaDestino string) error {
 	return w.Close()
 }
 
-//Cria um arquivo com o conteúdo da pasta de origem na pasta de destino.
-// O nome do arquivo é o mesmo que o da pasta de origem.
-func Dir(pastaOrigem, pastaDestino string) error {
-	base := filepath.Base(pastaOrigem)
-	out, err := os.Create(filepath.Join(pastaDestino, base+".zip"))
+//Cria um arquivo com o conteúdo da pasta de origem no arquivo de destino.
+//O arquivo de destino não deve conter a extensão.
+// Se informado "", o nome do arquivo é o mesmo que o da pasta de origem.
+func Dir(pastaOrigem, arquivoDestino string) error {
+	if arquivoDestino == "" {
+		arquivoDestino = filepath.Base(pastaOrigem)
+	}
+	out, err := os.Create(arquivoDestino + ".zip")
 	if err != nil {
 		return err
 	}
@@ -47,7 +51,11 @@ func Dir(pastaOrigem, pastaDestino string) error {
 		if info.IsDir() {
 			return nil
 		}
-		f, err := w.Create(path)
+		indice := strings.Index(path, string(os.PathSeparator))
+		newPath := path[indice+1:]
+		fmt.Println(newPath)
+		fmt.Println("---")
+		f, err := w.Create(newPath)
 		if err != nil {
 			return err
 		}
